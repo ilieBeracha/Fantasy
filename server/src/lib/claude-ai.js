@@ -108,6 +108,78 @@ const TOOLS = [
       required: ["team_key"],
     },
   },
+  {
+    name: "get_league_teams",
+    description:
+      "Get all teams in a league with team keys, names, and managers. Use this to find any team's key in the league, then use that key to fetch their roster or stats.",
+    input_schema: {
+      type: "object",
+      properties: {
+        league_key: { type: "string", description: "Yahoo league key" },
+      },
+      required: ["league_key"],
+    },
+  },
+  {
+    name: "get_league_teams_rosters",
+    description:
+      "Get all teams in the league with their full rosters (all players) in a single call. Use this to compare rosters across the entire league or find which team owns a specific player.",
+    input_schema: {
+      type: "object",
+      properties: {
+        league_key: { type: "string", description: "Yahoo league key" },
+      },
+      required: ["league_key"],
+    },
+  },
+  {
+    name: "get_league_teams_stats",
+    description:
+      "Get all teams in the league with their season stats. Great for comparing team performance across the league.",
+    input_schema: {
+      type: "object",
+      properties: {
+        league_key: { type: "string", description: "Yahoo league key" },
+      },
+      required: ["league_key"],
+    },
+  },
+  {
+    name: "get_player_stats",
+    description:
+      "Get detailed stats for a specific player. Can fetch season stats or stats for a specific week.",
+    input_schema: {
+      type: "object",
+      properties: {
+        league_key: { type: "string", description: "Yahoo league key" },
+        player_key: { type: "string", description: "Yahoo player key" },
+        week: {
+          type: "number",
+          description: "Week number for weekly stats. Omit for season stats.",
+        },
+      },
+      required: ["league_key", "player_key"],
+    },
+  },
+  {
+    name: "get_team_roster_stats",
+    description:
+      "Get a team's roster with player stats. Works for ANY team in the league, not just the user's team. Use get_league_teams first to find team keys.",
+    input_schema: {
+      type: "object",
+      properties: {
+        team_key: {
+          type: "string",
+          description: "Yahoo team key (works for any team in the league)",
+        },
+        week: {
+          type: "number",
+          description: "Week number. Omit for current roster stats.",
+        },
+      },
+      required: ["team_key"],
+    },
+  },
 ];
 
 const SYSTEM_PROMPT = `You are a fun, knowledgeable NBA Fantasy Basketball AI assistant connected to the user's Yahoo Fantasy Basketball league with real-time data access.
@@ -120,7 +192,15 @@ BEHAVIOR:
 - If no league key yet, call get_leagues with game_key "nba" first
 - Bold player names and key stats
 - Keep responses concise but insightful
-- Reference NBA games, schedules, and matchups when relevant`;
+- Reference NBA games, schedules, and matchups when relevant
+
+ACCESSING OTHER TEAMS' DATA:
+- You can view ANY team's roster and stats in the league, not just the user's team
+- To find all teams and their keys, use get_league_teams with the league key
+- To get all rosters across the league in one call, use get_league_teams_rosters
+- To get any team's roster with stats, use get_team_roster_stats with their team key
+- To compare all teams' stats, use get_league_teams_stats
+- When the user asks about an opponent or another manager's team, first get the league teams to find the right team key, then fetch that team's data`;
 
 async function executeTool(toolName, input, accessToken) {
   try {
@@ -143,6 +223,25 @@ async function executeTool(toolName, input, accessToken) {
         return await fantasyApi.getTransactions(accessToken, input.league_key);
       case "get_team_matchups":
         return await fantasyApi.getTeamMatchups(accessToken, input.team_key);
+      case "get_league_teams":
+        return await fantasyApi.getLeagueTeams(accessToken, input.league_key);
+      case "get_league_teams_rosters":
+        return await fantasyApi.getLeagueTeamsRosters(accessToken, input.league_key);
+      case "get_league_teams_stats":
+        return await fantasyApi.getLeagueTeamsStats(accessToken, input.league_key);
+      case "get_player_stats":
+        return await fantasyApi.getPlayerStats(
+          accessToken,
+          input.league_key,
+          input.player_key,
+          input.week
+        );
+      case "get_team_roster_stats":
+        return await fantasyApi.getTeamRosterStats(
+          accessToken,
+          input.team_key,
+          input.week
+        );
       default:
         return { error: `Unknown tool: ${toolName}` };
     }
