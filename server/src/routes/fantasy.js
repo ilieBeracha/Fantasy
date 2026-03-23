@@ -15,7 +15,7 @@ router.use(async (req, res, next) => {
 
 router.get("/leagues/:gameKey?", async (req, res) => {
   try {
-    const data = await fantasyApi.getLeagues(req.yahooToken, req.params.gameKey || "nfl");
+    const data = await fantasyApi.getLeagues(req.yahooToken, req.params.gameKey || "nba");
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });

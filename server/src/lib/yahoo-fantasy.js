@@ -10,7 +10,7 @@ async function yahooGet(accessToken, path) {
   return response.data;
 }
 
-async function getLeagues(accessToken, gameKey = "nfl") {
+async function getLeagues(accessToken, gameKey = "nba") {
   return yahooGet(accessToken, `/users;use_login=1/games;game_keys=${gameKey}/leagues`);
 }
 

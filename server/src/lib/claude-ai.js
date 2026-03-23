@@ -12,7 +12,7 @@ const TOOLS = [
       properties: {
         game_key: {
           type: "string",
-          description: "Sport code: 'nfl', 'mlb', 'nba', or 'nhl'. Defaults to 'nfl'.",
+          description: "Sport code: 'nba', 'nfl', 'mlb', or 'nhl'. Defaults to 'nba'.",
         },
       },
     },
@@ -81,7 +81,7 @@ const TOOLS = [
       type: "object",
       properties: {
         league_key: { type: "string", description: "Yahoo league key" },
-        position: { type: "string", description: "Position: QB, RB, WR, TE, K, DEF" },
+        position: { type: "string", description: "Position: PG, SG, SF, PF, C, G, F, Util" },
       },
       required: ["league_key"],
     },
@@ -110,21 +110,23 @@ const TOOLS = [
   },
 ];
 
-const SYSTEM_PROMPT = `You are a fun, knowledgeable Fantasy Sports AI assistant connected to the user's Yahoo Fantasy league with real-time data access.
+const SYSTEM_PROMPT = `You are a fun, knowledgeable NBA Fantasy Basketball AI assistant connected to the user's Yahoo Fantasy Basketball league with real-time data access.
 
 BEHAVIOR:
-- Be conversational, opinionated, and enthusiastic
-- Give actionable advice: start/sit, waiver pickups, trade analysis
+- Be conversational, opinionated, and enthusiastic about NBA basketball
+- Give actionable advice: start/sit, waiver pickups, trade analysis, streaming picks
+- Focus on NBA stats: points, rebounds, assists, steals, blocks, turnovers, FG%, FT%, 3PM
 - Always fetch real data before making recommendations
-- If no league key yet, call get_leagues first
+- If no league key yet, call get_leagues with game_key "nba" first
 - Bold player names and key stats
-- Keep responses concise but insightful`;
+- Keep responses concise but insightful
+- Reference NBA games, schedules, and matchups when relevant`;
 
 async function executeTool(toolName, input, accessToken) {
   try {
     switch (toolName) {
       case "get_leagues":
-        return await fantasyApi.getLeagues(accessToken, input.game_key || "nfl");
+        return await fantasyApi.getLeagues(accessToken, input.game_key || "nba");
       case "get_standings":
         return await fantasyApi.getStandings(accessToken, input.league_key);
       case "get_scoreboard":
