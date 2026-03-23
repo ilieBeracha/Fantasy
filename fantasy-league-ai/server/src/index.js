@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const session = require("express-session");
 const cors = require("cors");
 const authRoutes = require("./routes/auth");
@@ -33,6 +34,15 @@ app.use("/api/fantasy", fantasyRoutes);
 app.get("/health", (req, res) => {
   res.json({ status: "ok", authenticated: !!req.session.accessToken });
 });
+
+// Serve static client build in production
+if (process.env.NODE_ENV === "production") {
+  const clientBuild = path.join(__dirname, "../../client/dist");
+  app.use(express.static(clientBuild));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(clientBuild, "index.html"));
+  });
+}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
