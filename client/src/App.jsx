@@ -49,7 +49,7 @@ export default function App() {
       if (data.authenticated) {
         setMessages([{
           role: "assistant",
-          text: "Hey! I'm connected to your Yahoo Fantasy league. What do you want to know?",
+          text: "Hey! I'm connected to your Yahoo Fantasy Basketball league. What do you want to know?",
           suggestions: ["Show me my leagues", "What are the standings?", "Who's on my roster?", "Best free agents available?"],
         }]);
       }
@@ -97,13 +97,13 @@ export default function App() {
     return (
       <div style={styles.center}>
         <div style={{ textAlign: "center", maxWidth: 400 }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🏈</div>
-          <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 8 }}>Fantasy League AI</h1>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>🏀</div>
+          <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 8 }}>NBA Fantasy AI</h1>
           <p style={{ color: "#94a3b8", marginBottom: 32, lineHeight: 1.6 }}>
-            Connect your Yahoo account to chat with an AI that knows your league.
+            Connect your Yahoo account to chat with an AI that knows your NBA Fantasy Basketball league.
           </p>
           <a href="/auth/yahoo" style={styles.loginBtn}>🔐 Connect with Yahoo</a>
-          <p style={{ color: "#334155", fontSize: 12, marginTop: 16 }}>Read-only access to Fantasy Sports data.</p>
+          <p style={{ color: "#334155", fontSize: 12, marginTop: 16 }}>Read-only access to Yahoo Fantasy Basketball data.</p>
         </div>
       </div>
     );
@@ -112,10 +112,10 @@ export default function App() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <div style={styles.logo}>🏈</div>
+        <div style={styles.logo}>🏀</div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: 15 }}>Fantasy League AI</div>
-          <div style={{ fontSize: 11, color: "#64748b" }}>Yahoo Fantasy Sports</div>
+          <div style={{ fontWeight: 700, fontSize: 15 }}>NBA Fantasy AI</div>
+          <div style={{ fontSize: 11, color: "#64748b" }}>Yahoo Fantasy Basketball</div>
         </div>
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 6 }}>
           <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#22c55e" }} />
@@ -151,7 +151,7 @@ export default function App() {
 
       <div style={styles.inputArea}>
         <div style={styles.inputWrap}>
-          <input ref={inputRef} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSend()} placeholder="Ask about your fantasy league..." style={styles.input} />
+          <input ref={inputRef} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSend()} placeholder="Ask about your NBA fantasy league..." style={styles.input} />
           <button onClick={() => handleSend()} disabled={!input.trim() || isLoading} style={{ ...styles.sendBtn, background: input.trim() ? "linear-gradient(135deg,#4f46e5,#6366f1)" : "#1e2330", color: input.trim() ? "#fff" : "#475569", cursor: input.trim() ? "pointer" : "default" }}>↑</button>
         </div>
       </div>

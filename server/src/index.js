@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === "production") {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`\n🏈 Fantasy League AI running on http://localhost:${PORT}`);
+  console.log(`\n🏀 NBA Fantasy AI running on http://localhost:${PORT}`);
   if (!process.env.YAHOO_CLIENT_ID) {
     console.warn("⚠️  YAHOO_CLIENT_ID not set. Copy .env.example to .env\n");
   }
