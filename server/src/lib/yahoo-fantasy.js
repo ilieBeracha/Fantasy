@@ -54,6 +54,42 @@ async function getTeamMatchups(accessToken, teamKey) {
   return yahooGet(accessToken, `/team/${teamKey}/matchups`);
 }
 
+async function getLeagueTeams(accessToken, leagueKey) {
+  return yahooGet(accessToken, `/league/${leagueKey}/teams`);
+}
+
+async function getLeagueTeamsRosters(accessToken, leagueKey) {
+  return yahooGet(
+    accessToken,
+    `/league/${leagueKey}/teams;out=roster`
+  );
+}
+
+async function getLeagueTeamsStats(accessToken, leagueKey) {
+  return yahooGet(
+    accessToken,
+    `/league/${leagueKey}/teams;out=stats`
+  );
+}
+
+async function getPlayerStats(accessToken, leagueKey, playerKey, week) {
+  const weekParam = week
+    ? `;type=week;week=${week}`
+    : "";
+  return yahooGet(
+    accessToken,
+    `/league/${leagueKey}/players;player_keys=${playerKey}/stats${weekParam}`
+  );
+}
+
+async function getTeamRosterStats(accessToken, teamKey, week) {
+  const weekParam = week ? `;week=${week}` : "";
+  return yahooGet(
+    accessToken,
+    `/team/${teamKey}/roster${weekParam}/players/stats`
+  );
+}
+
 module.exports = {
   getLeagues,
   getStandings,
@@ -64,4 +100,9 @@ module.exports = {
   getFreeAgents,
   getTransactions,
   getTeamMatchups,
+  getLeagueTeams,
+  getLeagueTeamsRosters,
+  getLeagueTeamsStats,
+  getPlayerStats,
+  getTeamRosterStats,
 };

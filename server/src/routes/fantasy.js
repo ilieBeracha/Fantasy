@@ -49,4 +49,58 @@ router.get("/roster/:teamKey", async (req, res) => {
   }
 });
 
+router.get("/teams/:leagueKey", async (req, res) => {
+  try {
+    const data = await fantasyApi.getLeagueTeams(req.yahooToken, req.params.leagueKey);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/teams/:leagueKey/rosters", async (req, res) => {
+  try {
+    const data = await fantasyApi.getLeagueTeamsRosters(req.yahooToken, req.params.leagueKey);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/teams/:leagueKey/stats", async (req, res) => {
+  try {
+    const data = await fantasyApi.getLeagueTeamsStats(req.yahooToken, req.params.leagueKey);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/player-stats/:leagueKey/:playerKey", async (req, res) => {
+  try {
+    const data = await fantasyApi.getPlayerStats(
+      req.yahooToken,
+      req.params.leagueKey,
+      req.params.playerKey,
+      req.query.week
+    );
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/roster-stats/:teamKey", async (req, res) => {
+  try {
+    const data = await fantasyApi.getTeamRosterStats(
+      req.yahooToken,
+      req.params.teamKey,
+      req.query.week
+    );
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
