@@ -8,6 +8,7 @@ const chatRoutes = require("./routes/chat");
 const fantasyRoutes = require("./routes/fantasy");
 
 const app = express();
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(
   cors({
@@ -22,6 +23,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "lax" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
   })
