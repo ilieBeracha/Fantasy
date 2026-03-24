@@ -5,6 +5,20 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const TOOLS = [
   {
+    name: "get_my_team",
+    description:
+      "Get the authenticated user's own fantasy teams. ALWAYS call this first when the user says 'my roster', 'my team', 'my players', or anything referring to their own team. Returns the user's team key(s) directly — do NOT use get_league_teams to guess the user's team.",
+    input_schema: {
+      type: "object",
+      properties: {
+        game_key: {
+          type: "string",
+          description: "Sport code: 'nba', 'nfl', 'mlb', or 'nhl'. Defaults to 'nba'.",
+        },
+      },
+    },
+  },
+  {
     name: "get_leagues",
     description: "Get the user's Yahoo Fantasy leagues. Call this first if you don't have a league key.",
     input_schema: {
@@ -189,6 +203,7 @@ BEHAVIOR:
 - Give actionable advice: start/sit, waiver pickups, trade analysis, streaming picks
 - Focus on NBA stats: points, rebounds, assists, steals, blocks, turnovers, FG%, FT%, 3PM
 - Always fetch real data before making recommendations
+- When the user refers to "my roster", "my team", or "my players", ALWAYS call get_my_team first to get their actual team key — never guess from get_league_teams
 - If no league key yet, call get_leagues with game_key "nba" first
 - Bold player names and key stats
 - Keep responses concise but insightful
@@ -205,6 +220,8 @@ ACCESSING OTHER TEAMS' DATA:
 async function executeTool(toolName, input, accessToken) {
   try {
     switch (toolName) {
+      case "get_my_team":
+        return await fantasyApi.getMyTeams(accessToken, input.game_key || "nba");
       case "get_leagues":
         return await fantasyApi.getLeagues(accessToken, input.game_key || "nba");
       case "get_standings":

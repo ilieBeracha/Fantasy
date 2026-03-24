@@ -14,6 +14,10 @@ async function getLeagues(accessToken, gameKey = "nba") {
   return yahooGet(accessToken, `/users;use_login=1/games;game_keys=${gameKey}/leagues`);
 }
 
+async function getMyTeams(accessToken, gameKey = "nba") {
+  return yahooGet(accessToken, `/users;use_login=1/games;game_keys=${gameKey}/teams`);
+}
+
 async function getStandings(accessToken, leagueKey) {
   return yahooGet(accessToken, `/league/${leagueKey}/standings`);
 }
@@ -92,6 +96,7 @@ async function getTeamRosterStats(accessToken, teamKey, week) {
 
 module.exports = {
   getLeagues,
+  getMyTeams,
   getStandings,
   getScoreboard,
   getRoster,
